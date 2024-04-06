@@ -1,0 +1,16 @@
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+*.nuget.props
+*.nuget.targets
+*.user
+*.suo
+*.userprefs
+*.lock.json
+*.vspscc
+*.vssscc
+.vs/
+*.log
+bin/
+obj/
+publish/
