@@ -68,7 +68,7 @@ app.MapGet(
 
 /* 4. Declaring the explicit source for each request parameter. 
  * I expect a mandatory integer in the route, a string with 
- * a default value in the query string and a bool with adefault value in the header*/
+ * a default value in the query string and a bool with a default value in the header*/
 
 app.MapGet(
     "/explicit-source/{myNum}", 
@@ -82,29 +82,39 @@ app.MapGet(
 /* 5. Parsing primitive types into custom types */
 // Using a class which implements TryParse.
 // Primitive types in C# also implement this static function.
+// Example: http://localhost:5124/load/0x23f
 app.MapGet("/load/{pointer}", delegate(Pointer pointer) {
     return $"Received {pointer.Address}";
 });
 
-// Using a struct which implements TryParse. (explain along with memory management in C#)
-//TODO
+// Using a struct which implements TryParse. (explanation in declaration)
+// Example: http://localhost:5124/building/r12345
+app.MapGet("/building/{reference}", delegate(BuildingReference reference) {
+    return $"Received {reference.ReferenceValue}";
+});
 
-// Using a record class which implements TryParse. (explain)
-//TODO
+// Using a record class which implements TryParse. (explanation in declaration)
+// Example: http://localhost:5124/user/AB112233B
+app.MapGet("/user/{nino}", delegate(NationalInsuranceNumber nino) {
+    return $"Received {nino}";
+});
 
-// Using a record struct which implements TryParse. (explain)
-//TODO
+// Using a record struct which implements TryParse. (best of both worlds)
+// Example: http://localhost:5124/seat/4
+app.MapGet("/seat/{seatNumber}", delegate(SeatNumber seatNumber) {
+    return $"Received {seatNumber}";
+});
 
-// Using a readonly record struct which implements TryParse. (explain)
-//TODO
+// Using a readonly record struct which implements TryParse. 
+// (prevents modifications of the original source)
+// Example: http://localhost:5124/table/6
+app.MapGet("/table/{tableNumber}", delegate(TableNumber tableNumber) {
+    return $"Received {tableNumber}";
+});
 
 /* 6. Parsing request body (use Postman) */
-
-//Simple types
-//TODO
-
-/* Complex types. No need to use all the examples from above, 
- * just readonly record struct would be fine) */
-//TODO
+app.MapPost("/patient/store" , ([FromBody] PatientData patientData) => $"Received {patientData}");
 
 app.Run();
+
+readonly record struct PatientData(int Id, string Name, string Disease);
