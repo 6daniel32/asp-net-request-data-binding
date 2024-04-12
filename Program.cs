@@ -113,6 +113,8 @@ app.MapGet("/table/{tableNumber}", delegate(TableNumber tableNumber) {
 });
 
 /* 6. Parsing request body (use Postman) */
+app.MapPost("/body/number" , ([FromBody] int number) => $"Received {number}");
+
 app.MapPost("/patient/store" , ([FromBody] PatientData patientData) => $"Received {patientData}");
 
 app.Run();
